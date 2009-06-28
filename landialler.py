@@ -80,6 +80,7 @@ import traceback
 import xmlrpclib
 
 import pygtk; pygtk.require("2.0")
+import gobject
 import gtk
 import gtk.glade
 
@@ -194,7 +195,7 @@ class MainWindow(Window):
         self._seconds_online = 0
         self._last_check_time = None
         self._status_timeout = None
-        gtk.timeout_add(self.UPDATE_TIMER_PERIOD, self._update_timer)
+        gobject.timeout_add(self.UPDATE_TIMER_PERIOD, self._update_timer)
         self.connect()
 
     def update(self):
@@ -203,7 +204,7 @@ class MainWindow(Window):
             self._set_status_connected(self._modem.seconds_online)
         else:
             self._set_status_disconnected()
-        return gtk.TRUE
+        return True
             
     def _set_status_label(self, status):
         self.status_label.set_label(self.STATUS_LABEL % status)
@@ -216,8 +217,8 @@ class MainWindow(Window):
             "%s %s, on-line for %s" %
             (self._modem.num_users, user_str, time_str))
         self.root_widget.set_title("%s (connected)" % MainWindow.TITLE)
-        self.connect_button.set_sensitive(gtk.FALSE)
-        self.disconnect_button.set_sensitive(gtk.TRUE)
+        self.connect_button.set_sensitive(False)
+        self.disconnect_button.set_sensitive(True)
 
     def _update_timer(self):
         if self._modem.is_connected:
@@ -230,8 +231,8 @@ class MainWindow(Window):
         self._set_status_label("disconnected")
         self.details_label.set_label("")
         self.root_widget.set_title(MainWindow.TITLE)
-        self.connect_button.set_sensitive(gtk.TRUE)
-        self.disconnect_button.set_sensitive(gtk.FALSE)
+        self.connect_button.set_sensitive(True)
+        self.disconnect_button.set_sensitive(False)
 
     def on_main_window_delete_event(self, *args):
         self._modem.remove_observer(self)
@@ -244,12 +245,12 @@ class MainWindow(Window):
 
     def _check_status(self):
         self._modem.get_status()
-        return gtk.TRUE
+        return True
 
     def connect(self):
         if self._status_timeout:
-            gtk.timeout_remove(self._status_timeout)
-        self._status_timeout = gtk.timeout_add(
+            gobject.source_remove(self._status_timeout)
+        self._status_timeout = gobject.timeout_add(
             self.CHECK_STATUS_PERIOD, self._check_status)
         self._modem.connect()
         dialog = ConnectingDialog(self._modem)
@@ -276,12 +277,12 @@ class ConnectingDialog(Window):
 
         def pulse():
             self.progressbar1.pulse()
-            return gtk.TRUE
+            return True
         
-        self._progress_timeout = gtk.timeout_add(100, pulse)
+        self._progress_timeout = gobject.timeout_add(100, pulse)
 
     def destroy(self):
-        gtk.timeout_remove(self._progress_timeout)
+        gobject.source_remove(self._progress_timeout)
         self._modem.remove_observer(self)
         Window.destroy(self)
 
@@ -344,10 +345,10 @@ class ExceptionDialog(Window):
     def on_details_button_clicked(self, *args):
         if self.scrolledwindow1.get_property("visible"):
             self.details_button.set_label("Details >>")
-            self.scrolledwindow1.set_property("visible", gtk.FALSE)
+            self.scrolledwindow1.set_property("visible", False)
         else:
             self.details_button.set_label("Details <<")
-            self.scrolledwindow1.set_property("visible", gtk.TRUE)
+            self.scrolledwindow1.set_property("visible", True)
         self.root_widget.queue_resize()
 
     def on_close_button_clicked(self, *args):
