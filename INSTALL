@@ -1,0 +1,74 @@
+INSTALL
+-------
+
+This file contains the installation instructions for landialler.py.
+In the future they will be streamlined so that you will be able to
+type something as simple as "python setup.py", but unfortunately we're
+not quite there yet.
+
+
+REQUIREMENTS
+
+  - Python 2.3 from http://www.python.org/
+  - PyGTK from http://pygtk.org/
+
+Note that from version 0.3 onwards LANdialler no longer works with
+PyGTK 0.6.x, but should work with any version later than 2.0.
+
+
+INSTALLATION
+
+If you need to install Python or PyGTK you must follow the
+instructions that come with those packages.
+
+To install LANdialler follow the instructions for your platform:
+
+  WINDOWS
+
+      Note: The Windows installation instructions have not yet been
+      	    tested, but will be before version 0.3 is released.
+
+    - Create a landialler directory (e.g. C:\Program Files\landialler)
+      and copy landialler.py and landialler.conf into the new directory.
+      If you want to put the landialler.conf file in a different directory
+      you may, but see the notes on the -c command line option below.
+
+    - Right click the desktop to create a new shortcut and point
+      it towards landialler.py. Make sure that the shortcut runs
+      landialler in it's own directory.
+
+      Note: If you'd like to avoid the console window that always pops
+            up when you run landialler.py then rename landialler.py to
+            landialler.pyw and use that instead.
+
+  UNIX (OR LINUX)
+
+    - Simply type "python setup.py install" to have everything done for
+      you.
+
+      Note: landialler.py will be copied into /usr/local/bin
+            landialler.conf will be copied into /usr/local/etc
+
+      If you want to put the configuration file somewhere else you may,
+      but see the notes on the -c command line option below.
+
+
+CONFIGURATION
+
+You will probably need to edit the [xmlrpcserver] section of the
+config file. Set the IP address of your LANdialler server in the file.
+
+Once LANdialler is installed properly you may find the following command
+line options useful:
+
+  -c file       specify an alternate configuration file
+
+If you have problems installing either the client or the server then I
+will try and help you if I can. Please make sure that you send me as
+much information as you can, including the operating system (and
+version number) that you are using, the version of Python and any
+output that you see when you launch the software (either on the
+command line or in syslog).
+
+
+$Id: INSTALL,v 1.11 2004/07/01 07:04:23 ashtong Exp $

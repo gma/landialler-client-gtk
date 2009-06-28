@@ -1,0 +1,14 @@
+# $Id: MANIFEST.in,v 1.4 2004/10/06 06:36:00 ashtong Exp $
+#
+# Used by distutils to generate the MANIFEST file, which controls what
+# makes it into the distribution.
+
+include AUTHORS
+include COPYING
+include INSTALL
+include README
+include landialler.conf
+include landialler.glade
+include landialler.py
+include run_setup.py
+include setup.py
